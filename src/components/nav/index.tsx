@@ -36,6 +36,12 @@ export function Nav() {
         {user == null && (
           <ButtonGoogleSignIn onClick={signIn}/>
         )}
+        {user != null && (
+          <a href="app" className="btn btn-primary">
+            <span className="material-symbols-outlined">add</span>
+            Add app
+          </a>
+        )}
         {user?.photoURL && (
           <div className="relative">
             <div className="dropdown dropdown-end">
