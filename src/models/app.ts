@@ -1,4 +1,5 @@
 interface App {
+  id: string
   applicationName: string
   packageName: string
   testingLink: string
