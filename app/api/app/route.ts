@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       .offset(+pageSize * (+page - 1))
       .get())
       .docs
-      .map(doc => doc.data() as App), {headers: {'Cache-Control': 's-maxage=60'}})
+      .map(doc => ({id: doc.id, ...doc.data()} as App)), {headers: {'Cache-Control': 's-maxage=60'}})
   } catch (e) {
     return Response.json([])
   }
