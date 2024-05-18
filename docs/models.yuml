@@ -1,0 +1,8 @@
+// {type:class}
+// {direction:leftToRight}
+// {generate:true}
+
+[App]++1-0..*[AppTesting]
+[User]1-0..*[AppTesting]
+[User]1-0..*>[Event]
+[Event]1-1>[AppTesting]
