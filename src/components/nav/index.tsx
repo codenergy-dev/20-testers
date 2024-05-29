@@ -30,7 +30,9 @@ export function Nav() {
   return (
     <nav className="navbar bg-base-100">
       <div className="flex-1">
-        <a href="/" className="btn btn-ghost text-xl">20 Testers</a>
+        <a href="/" className="btn btn-ghost text-xl">
+          <span className="material-symbols-outlined">experiment</span>
+        </a>
       </div>
       <div className="flex items-center gap-4">
         {user == null && (
