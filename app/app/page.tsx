@@ -40,10 +40,6 @@ export default function Page() {
           <span className="material-symbols-outlined">android</span>
           <input {...form.getInputProps('packageName')} type="text" className="grow" placeholder="Package name" />
         </label>
-        <label className="flex-1 tooltip input input-bordered flex items-center gap-2" data-tip="Paste your invite link available on Play Console">
-          <span className="material-symbols-outlined">link</span>
-          <input {...form.getInputProps('testingLink')} type="text" className="grow" placeholder="Testing link" />
-        </label>
       </div>
       <div className="h-4"></div>
       <label className="form-control">
