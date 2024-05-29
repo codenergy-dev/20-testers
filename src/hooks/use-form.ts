@@ -9,6 +9,7 @@ export const useForm = <T>(initialValues: Partial<T>) => {
 
   function getInputProps(key: keyof T) {
     return {
+      value: values[key] as string,
       onChange: (event: ChangeEvent<any>) => {
         setFieldValue(key, event.target.value)
       }
