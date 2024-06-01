@@ -9,9 +9,15 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page') ?? 1
     const pageSize = 10
-    return Response.json((await db
-      .collection('apps')
-      .limit(+pageSize)
+    const orderBy = searchParams.get('orderBy')
+    const sort = searchParams.get('sort') ?? 'desc'
+    
+    var query = db.collection('apps').limit(+pageSize)
+    if (orderBy && orderBy == 'created') {
+      query = query.orderBy('created', sort == 'asc' ? 'asc' : 'desc')
+    }
+    
+    return Response.json((await query
       .offset(+pageSize * (+page - 1))
       .get())
       .docs
