@@ -20,7 +20,10 @@ export function AppCard({app}: AppCardProps) {
             <span className="font-bold text-white text-ellipsis overflow-hidden whitespace-nowrap">
               {app.applicationName}
             </span>
-            <a href={`/app/${app.id}`} className="w-16 btn btn-outline border-white text-white hover:border-white hover:text-slate-700 hover:bg-white btn-xs">
+            <a
+              href={app.id ? `/app/${app.id}` : undefined}
+              className="w-16 btn btn-outline border-white text-white hover:border-white hover:text-slate-700 hover:bg-white btn-xs"
+            >
               View
             </a>
           </div>
