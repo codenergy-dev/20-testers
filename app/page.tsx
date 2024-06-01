@@ -1,3 +1,5 @@
+import { AppCard } from "@/src/components/app-card"
+
 export const revalidate = 60
 
 async function getApps(searchParams: any) {
@@ -24,14 +26,9 @@ export default async function Page({searchParams}: any) {
   const count = await getAppsCount()
   return (
     <main>
-      {apps.map(app => (
-        <div key={app.packageName} className="m-2 card bg-neutral text-neutral-content">
-          <div className="card-body">
-            <h2 className="card-title">{app.applicationName}</h2>
-            <p>{app.packageName}</p>
-          </div>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+        {apps.map(app => <AppCard app={app} />)}
+      </div>
       <div className="join ml-2">
         {Array.from({length: Math.ceil(count/pageSize)}, (_, i) => i).map(i => (
           <a
