@@ -1,5 +1,6 @@
 'use client'
 
+import { AppCard } from "@/src/components/app-card"
 import { InputImageUrl } from "@/src/components/input-image-url"
 import { ValidatorException } from "@/src/exceptions/validator"
 import { useForm } from "@/src/hooks/use-form"
@@ -47,27 +48,32 @@ export default function Page() {
         Here you can share your app with other developers and people so they can test it
       </legend>
       <div className="h-4"></div>
-      <div className="flex gap-4">
-        <InputImageUrl
-          id="app-icon"
-          label="App icon"
-          description="Copy the app icon URL from your application page on Google Play."
-          value={form.values.icon}
-          onChanged={onIconChanged}
-        />
-        <label className="flex-1 input input-bordered flex items-center gap-2">
-          <span className="material-symbols-outlined">verified</span>
-          <input {...form.getInputProps('applicationName')} type="text" className="grow" placeholder="Application name" />
-        </label>
-        <label className="flex-1 tooltip input input-bordered flex items-center gap-2" data-tip="Paste your invite link available on Play Console">
-          <span className="material-symbols-outlined">android</span>
-          <input {...form.getInputProps('packageName')} type="text" className="grow" placeholder="Package name" />
-        </label>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <div className="flex gap-4">
+            <InputImageUrl
+              id="app-icon"
+              label="App icon"
+              description="Copy the app icon URL from your application page on Google Play."
+              value={form.values.icon}
+              onChanged={onIconChanged}
+            />
+            <label className="flex-1 input input-bordered flex items-center gap-2">
+              <input {...form.getInputProps('applicationName')} type="text" className="grow" placeholder="Application name" />
+            </label>
+          </div>
+          <div className="h-4"></div>
+          <label className="tooltip input input-bordered flex items-center gap-2" data-tip="Paste your invite link available on Play Console">
+            <span className="material-symbols-outlined">android</span>
+            <input {...form.getInputProps('packageName')} type="text" className="grow" placeholder="Package name" />
+          </label>
+          <div className="h-4"></div>
+          <label className="flex-1 form-control">
+            <textarea {...form.getInputProps('description')} className="textarea textarea-bordered h-full" placeholder="Description"></textarea>
+          </label>
+        </div>
+        <AppCard app={form.values as App} />
       </div>
-      <div className="h-4"></div>
-      <label className="form-control">
-        <textarea {...form.getInputProps('description')}className="textarea textarea-bordered h-24" placeholder="Description"></textarea>
-      </label>
       <div className="h-4"></div>
       <div className="flex flex-wrap gap-4">
         <InputImageUrl
