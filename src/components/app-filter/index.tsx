@@ -122,7 +122,7 @@ export function AppJoinFilter({label, selected, onClick}: AppJoinFilterProps) {
 
 interface AppSelectFilterProps {
   data: string[]
-  placeholder: string
+  placeholder?: string
   onChange: (value: string) => void
 }
 
@@ -132,7 +132,7 @@ export function AppSelectFilter({data, placeholder, onChange}: AppSelectFilterPr
       className="w-48 select select-bordered select-sm"
       onChange={(e) => onChange(e.target.value)}
     >
-      <option value="">{placeholder}</option>
+      {placeholder && <option value="">{placeholder}</option>}
       {data.map(value => (
         <option key={value}>{value}</option>
       ))}
