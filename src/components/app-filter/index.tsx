@@ -81,7 +81,7 @@ interface AppButtonFilterProps {
   onClick: () => void
 }
 
-function AppButtonFilter({label, selected, onClick}: AppButtonFilterProps) {
+export function AppButtonFilter({label, selected, onClick}: AppButtonFilterProps) {
   return (
     <button
       className={[
@@ -103,7 +103,7 @@ interface AppJoinFilterProps {
   onClick: () => void
 }
 
-function AppJoinFilter({label, selected, onClick}: AppJoinFilterProps) {
+export function AppJoinFilter({label, selected, onClick}: AppJoinFilterProps) {
   return (
     <button
       className={[
@@ -126,7 +126,7 @@ interface AppSelectFilterProps {
   onChange: (value: string) => void
 }
 
-function AppSelectFilter({data, placeholder, onChange}: AppSelectFilterProps) {
+export function AppSelectFilter({data, placeholder, onChange}: AppSelectFilterProps) {
   return (
     <select
       className="w-48 select select-bordered select-sm"
