@@ -1,15 +1,29 @@
 'use client'
 
 import { AppCard } from "@/src/components/app-card"
+import { AppButtonFilter, AppSelectFilter } from "@/src/components/app-filter"
 import { InputImageUrl } from "@/src/components/input-image-url"
+import { appCategories, gameCategories } from "@/src/constants/categories"
 import { ValidatorException } from "@/src/exceptions/validator"
 import { useForm } from "@/src/hooks/use-form"
 import { validate } from "@/src/validators/app"
 
 export default function Page() {
   const form = useForm<App>({
+    type: 'app',
+    category: appCategories[0],
     screenshots: [],
   })
+
+  function onTypeChanged(type: AppType) {
+    form.setFieldValue('type', type)
+    type == 'app' && form.setFieldValue('category', appCategories[0])
+    type == 'game' && form.setFieldValue('category', gameCategories[0])
+  }
+
+  function onCategoryChanged(category: string) {
+    form.setFieldValue('category', category)
+  }
 
   function onIconChanged(icon: string) {
     form.setFieldValue('icon', icon)
@@ -67,6 +81,31 @@ export default function Page() {
             <span className="material-symbols-outlined">android</span>
             <input {...form.getInputProps('packageName')} type="text" className="grow" placeholder="Package name" />
           </label>
+          <div className="h-4"></div>
+          <div className="flex flex-row gap-2">
+            <AppButtonFilter
+              label="App"
+              selected={form.values.type == 'app'}
+              onClick={() => onTypeChanged('app')}
+            />
+            <AppButtonFilter
+              label="Game"
+              selected={form.values.type == 'game'}
+              onClick={() => onTypeChanged('game')}
+            />
+            {form.values.type == 'app' && (
+              <AppSelectFilter
+                data={appCategories}
+                onChange={onCategoryChanged}
+              />
+            )}
+            {form.values.type == 'game' && (
+              <AppSelectFilter
+                data={gameCategories}
+                onChange={onCategoryChanged}
+              />
+            )}
+          </div>
           <div className="h-4"></div>
           <label className="flex-1 form-control">
             <textarea {...form.getInputProps('description')} className="textarea textarea-bordered h-full" placeholder="Description"></textarea>
