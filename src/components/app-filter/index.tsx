@@ -84,6 +84,7 @@ interface AppButtonFilterProps {
 export function AppButtonFilter({label, selected, onClick}: AppButtonFilterProps) {
   return (
     <button
+      type="button"
       className={[
         'btn',
         selected ? 'btn-primary' : 'btn-outline',
@@ -106,6 +107,7 @@ interface AppJoinFilterProps {
 export function AppJoinFilter({label, selected, onClick}: AppJoinFilterProps) {
   return (
     <button
+      type="button"
       className={[
         'btn',
         selected ? 'btn-primary' : 'btn-outline',
