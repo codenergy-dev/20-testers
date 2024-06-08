@@ -7,7 +7,11 @@ import { useEffect, useState } from "react"
 type OrderBy = 'newest' | 'oldest'
 type Type = 'all' | 'app' | 'game'
 
-export function AppFilter() {
+interface AppFilterProps {
+  onChange?: (query: any) => void
+}
+
+export function AppFilter({onChange}: AppFilterProps) {
   const router = useRouter()
   const [orderBy, setOrderBy] = useState<OrderBy>('newest')
   const [type, setType] = useState<Type>('all')
@@ -21,6 +25,7 @@ export function AppFilter() {
       category: category,
     }
     router.push('?' + new URLSearchParams(query).toString())
+    onChange && onChange(query)
   }, [orderBy, type, category])
 
   function onTypeChange(type: Type) {
