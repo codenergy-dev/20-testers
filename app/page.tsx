@@ -43,7 +43,7 @@ export default function Page({searchParams}: any) {
 
   return (
     <main>
-      <AppSearchParams onChange={(searchParams) => getApps(searchParams, true)} />
+      <AppSearchParams searchParams={searchParams} onChange={(searchParams) => getApps(searchParams, true)} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
         {apps.map((app, i) => <AppCard key={app.packageName} app={app} />)}
         {loading && <div className="skeleton h-96"></div>}

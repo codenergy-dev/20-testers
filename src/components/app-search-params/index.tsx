@@ -8,14 +8,15 @@ type OrderBy = 'newest' | 'oldest'
 type Type = 'all' | 'app' | 'game'
 
 interface AppSearchParamsProps {
+  searchParams?: any
   onChange?: (searchParams: any) => void
 }
 
-export function AppSearchParams({onChange}: AppSearchParamsProps) {
+export function AppSearchParams({searchParams = {}, onChange}: AppSearchParamsProps) {
   const router = useRouter()
-  const [orderBy, setOrderBy] = useState<OrderBy>('newest')
-  const [type, setType] = useState<Type>('all')
-  const [category, setCategory] = useState<string>('')
+  const [orderBy, setOrderBy] = useState<OrderBy>(searchParams.sort == 'desc' ? 'newest' : 'oldest')
+  const [type, setType] = useState<Type>(searchParams.type ?? 'all')
+  const [category, setCategory] = useState<string>(searchParams.category ?? '')
 
   useEffect(() => {
     const searchParams = {
