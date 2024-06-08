@@ -62,7 +62,7 @@ export default function Page() {
         Here you can share your app with other developers and people so they can test it
       </legend>
       <div className="h-4"></div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col">
           <div className="flex gap-4">
             <InputImageUrl
