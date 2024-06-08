@@ -1,7 +1,7 @@
 'use client'
 
 import { AppCard } from "@/src/components/app-card"
-import { AppButtonFilter, AppSelectFilter } from "@/src/components/app-filter"
+import { AppButtonFilter, AppSelectFilter } from "@/src/components/app-search-params"
 import { InputImageUrl } from "@/src/components/input-image-url"
 import { appCategories, gameCategories } from "@/src/constants/categories"
 import { ValidatorException } from "@/src/exceptions/validator"

@@ -7,25 +7,25 @@ import { useEffect, useState } from "react"
 type OrderBy = 'newest' | 'oldest'
 type Type = 'all' | 'app' | 'game'
 
-interface AppFilterProps {
-  onChange?: (query: any) => void
+interface AppSearchParamsProps {
+  onChange?: (searchParams: any) => void
 }
 
-export function AppFilter({onChange}: AppFilterProps) {
+export function AppSearchParams({onChange}: AppSearchParamsProps) {
   const router = useRouter()
   const [orderBy, setOrderBy] = useState<OrderBy>('newest')
   const [type, setType] = useState<Type>('all')
   const [category, setCategory] = useState<string>('')
 
   useEffect(() => {
-    const query = {
+    const searchParams = {
       orderBy: 'created',
       sort: orderBy == 'newest' ? 'desc' : 'asc',
       type: type,
       category: category,
     }
-    router.push('?' + new URLSearchParams(query).toString())
-    onChange && onChange(query)
+    router.push('?' + new URLSearchParams(searchParams).toString())
+    onChange && onChange(searchParams)
   }, [orderBy, type, category])
 
   function onTypeChange(type: Type) {

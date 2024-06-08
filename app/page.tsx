@@ -1,7 +1,7 @@
 'use client'
 
 import { AppCard } from "@/src/components/app-card"
-import { AppFilter } from "@/src/components/app-filter"
+import { AppSearchParams } from "@/src/components/app-search-params"
 import { useState } from "react"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 
@@ -43,7 +43,7 @@ export default function Page({searchParams}: any) {
 
   return (
     <main>
-      <AppFilter onChange={(searchParams) => getApps(searchParams, true)} />
+      <AppSearchParams onChange={(searchParams) => getApps(searchParams, true)} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
         {apps.map((app, i) => <AppCard key={app.packageName} app={app} />)}
         {loading && <div className="skeleton h-96"></div>}
