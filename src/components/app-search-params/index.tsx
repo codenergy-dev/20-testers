@@ -14,7 +14,7 @@ interface AppSearchParamsProps {
 
 export function AppSearchParams({searchParams = {}, onChange}: AppSearchParamsProps) {
   const router = useRouter()
-  const [orderBy, setOrderBy] = useState<OrderBy>(searchParams.sort == 'desc' ? 'newest' : 'oldest')
+  const [orderBy, setOrderBy] = useState<OrderBy>(searchParams.sort == 'asc' ? 'oldest' : 'newest')
   const [type, setType] = useState<Type>(searchParams.type ?? 'all')
   const [category, setCategory] = useState<string>(searchParams.category ?? '')
 
