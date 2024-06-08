@@ -9,19 +9,29 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page') ?? 1
     const pageSize = 10
+    var query = db.collection('apps').limit(+pageSize)
+
     const orderBy = searchParams.get('orderBy')
     const sort = searchParams.get('sort') ?? 'desc'
-    
-    var query = db.collection('apps').limit(+pageSize)
-    if (orderBy && orderBy == 'created') {
+    if (orderBy == 'created') {
       query = query.orderBy('created', sort == 'asc' ? 'asc' : 'desc')
+    }
+
+    const type = searchParams.get('type') as AppType | null
+    if (type == 'app' || type == 'game') {
+      query = query.where('type', '==', type)
+    }
+
+    const category = searchParams.get('category')
+    if (category) {
+      query = query.where('category', '==', category)
     }
     
     return Response.json((await query
       .offset(+pageSize * (+page - 1))
       .get())
       .docs
-      .map(doc => ({id: doc.id, ...doc.data()} as App)), {headers: {'Cache-Control': 's-maxage=60'}})
+      .map(doc => ({id: doc.id, ...doc.data()} as App)))
   } catch (e) {
     return Response.json([])
   }
