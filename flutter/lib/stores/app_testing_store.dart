@@ -12,22 +12,27 @@ class AppTestingStore extends ValueNotifier<List<dynamic>> {
       .where('uid', isEqualTo: uid)
       .get())
       .docs
-      .map((doc) => doc.data())
+      .map((doc) => {...doc.data(), 'id': doc.id})
       .toList();
     SharedPreferences.getInstance().then((prefs) {
       for (dynamic appTesting in value) {
         final packageName = appTesting['packageName'];
         if (!prefs.containsKey(packageName)) {
           prefs.setString(packageName, '');
+          prefs.setString('$packageName.app.id', appTesting['appId']);
+          prefs.setString('$packageName.testing.id', appTesting['id']);
         }
+        prefs.setString('$packageName.testing.status', appTesting['status']);
       }
     });
   }
 
-  void add(String uid, String packageName) {
+  void add(String uid, String appId, String packageName) {
     final data = {
       'uid': uid,
+      'appId': appId,
       'packageName': packageName,
+      'status': 'optin',
       'created': DateTime.now().toIso8601String(),
     };
     FirebaseFirestore.instance

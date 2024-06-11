@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
@@ -38,18 +39,26 @@ class AppAccessibilityService : AccessibilityService() {
   override fun onAccessibilityEvent(event: AccessibilityEvent?) {
     try {
       initializeFirebaseIfNeeded()
+
       val prefs = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
       val uid = prefs.getString("flutter.uid", "")!!
       if (uid.isEmpty()) return
+
       val packageName = event?.packageName!!.toString()
-      if (!prefs.contains("flutter.$packageName")) return
+      val appId = prefs.getString("flutter.$packageName.app.id", "")!!
+      val testingId = prefs.getString("flutter.$packageName.testing.id", "")!!
+      val testingStatus = prefs.getString("flutter.$packageName.testing.status", "")!!
+      if (appId.isBlank() || testingId.isBlank() || testingStatus.isBlank()) return
+
       val lastAppOpen = prefs.getString("flutter.$packageName", "")!!
       val todayAppOpen = SimpleDateFormat("yyyy-MM-dd").format(Date())
       if (lastAppOpen == todayAppOpen) return
+
       val db = Firebase.firestore
       val isoDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").apply {
         timeZone = TimeZone.getTimeZone("UTC")
       }
+
       db.collection("events").add(hashMapOf(
         "uid" to uid,
         "event" to "app_open",
@@ -57,6 +66,18 @@ class AppAccessibilityService : AccessibilityService() {
         "created" to isoDateFormat.format(Date()),
       ))
       prefs.edit().putString("flutter.$packageName", todayAppOpen).apply()
+
+      if (testingStatus == "optin") {
+        db.collection("apps").document(appId).update(mapOf(
+          "testers" to FieldValue.increment(1)
+        ))
+        db.collection("app-testing").document(testingId).update(mapOf(
+          "status" to "testing",
+          "optin" to isoDateFormat.format(Date()),
+        ))
+        prefs.edit().putString("flutter.$packageName.testing.status", "testing").apply()
+      }
+
       Log.d("onAccessibilityEvent", "app_open $packageName")
     } catch (e: Exception) {
       Log.e("onAccessibilityEvent", e.stackTraceToString())

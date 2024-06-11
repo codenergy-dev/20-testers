@@ -9,5 +9,6 @@ interface App {
   icon: string
   screenshots: string[]
   description: string
+  testers?: number
   created: Date | string
 }

@@ -133,7 +133,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                           value: appTesting.any(packageName), 
                           onChanged: (checked) {
                             if (checked == true) {
-                              appTesting.add(user.value!.uid, packageName);
+                              appTesting.add(user.value!.uid, doc.id, packageName);
                             }
                           },
                         ),
