@@ -27,7 +27,7 @@ class AppTestingStore extends ValueNotifier<List<dynamic>> {
     });
   }
 
-  void add(String uid, String appId, String packageName) {
+  Future<void> add(String uid, String appId, String packageName) async {
     final data = {
       'uid': uid,
       'appId': appId,
@@ -35,11 +35,16 @@ class AppTestingStore extends ValueNotifier<List<dynamic>> {
       'status': 'optin',
       'created': DateTime.now().toIso8601String(),
     };
-    FirebaseFirestore.instance
+    final doc = await FirebaseFirestore.instance
       .collection('app-testing')
       .add(data);
     value = [...value, data];
-    SharedPreferences.getInstance().then((prefs) => prefs.setString(packageName, ''));
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString(packageName, '');
+      prefs.setString('$packageName.app.id', appId);
+      prefs.setString('$packageName.testing.id', doc.id);
+      prefs.setString('$packageName.testing.status', 'optin');
+    });
   }
 
   bool any(String packageName) =>
