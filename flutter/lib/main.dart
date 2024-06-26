@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testers20/firebase_options.dart';
@@ -26,6 +26,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
+  static const channel = MethodChannel('dev.codenergy.testers20');
+  
   final appTesting = AppTestingStore();
   final isAccessibilityPermissionEnabled = ValueNotifier(false);
   final user = UserStore();
@@ -105,8 +107,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
-                    onPressed: () => FlutterAccessibilityService
-                      .requestAccessibilityPermission()
+                    onPressed: () => channel
+                      .invokeMethod('requestAccessibilityPermission')
                       .then((_) => checkIsAccessibilityPermissionEnabled()), 
                     icon: const Icon(Icons.open_in_new),
                     label: const Text('Open settings'),

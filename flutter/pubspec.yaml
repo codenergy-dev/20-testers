@@ -41,7 +41,6 @@ dependencies:
   google_sign_in: ^6.2.1
   shared_preferences: ^2.2.3
   firebase_ui_firestore: ^1.6.2
-  flutter_accessibility_service: ^0.2.4
   flutter_dotenv: ^5.1.0
 
 dev_dependencies:
