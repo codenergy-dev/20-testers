@@ -38,20 +38,28 @@ class AppAccessibilityService : AccessibilityService() {
 
   override fun onAccessibilityEvent(event: AccessibilityEvent?) {
     try {
+      Log.d("AppAccessibilityService", "app_open ${event?.packageName}")
+      
       initializeFirebaseIfNeeded()
 
       val prefs = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
       val uid = prefs.getString("flutter.uid", "")!!
+      Log.d("AppAccessibilityService", "uid $uid")
       if (uid.isEmpty()) return
 
       val packageName = event?.packageName!!.toString()
       val appId = prefs.getString("flutter.$packageName.app.id", "")!!
       val testingId = prefs.getString("flutter.$packageName.testing.id", "")!!
       val testingStatus = prefs.getString("flutter.$packageName.testing.status", "")!!
+      Log.d("AppAccessibilityService", "appId $appId")
+      Log.d("AppAccessibilityService", "testingId $testingId")
+      Log.d("AppAccessibilityService", "testingStatus $testingStatus")
       if (appId.isBlank() || testingId.isBlank() || testingStatus.isBlank()) return
 
       val lastAppOpen = prefs.getString("flutter.$packageName", "")!!
       val todayAppOpen = SimpleDateFormat("yyyy-MM-dd").format(Date())
+      Log.d("AppAccessibilityService", "lastAppOpen $lastAppOpen")
+      Log.d("AppAccessibilityService", "todayAppOpen $todayAppOpen")
       if (lastAppOpen == todayAppOpen) return
 
       val db = Firebase.firestore
@@ -78,20 +86,24 @@ class AppAccessibilityService : AccessibilityService() {
         prefs.edit().putString("flutter.$packageName.testing.status", "testing").apply()
       }
 
-      Log.d("onAccessibilityEvent", "app_open $packageName")
     } catch (e: Exception) {
-      Log.e("onAccessibilityEvent", e.stackTraceToString())
+      Log.e("AppAccessibilityService", e.stackTraceToString())
     }
   }
 
   fun initializeFirebaseIfNeeded() {
-    if (FirebaseApp.getApps(applicationContext).isEmpty()) {
-      FirebaseApp.initializeApp(applicationContext)
+    try {
+      if (FirebaseApp.getApps(applicationContext).isEmpty()) {
+        FirebaseApp.initializeApp(applicationContext)
+      }
+    } catch (e: Exception) {
+      Log.e("AppAccessibilityService", e.stackTraceToString())
     }
   }
 
   fun setAccessibilityEnabled(value: Boolean) {
     val prefs = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
     prefs.edit().putBoolean("flutter.accessibilityEnabled", value).apply()
+    Log.d("AppAccessibilityService", "setAccessibilityEnabled $value")
   }
 }
